@@ -1,8 +1,7 @@
-import { Tabs } from "expo-router";
 import React from "react";
 
+import Tabs from "@/components/BottomTabNavigator";
 import { Theme } from "@/constants/theme";
-import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@shopify/restyle";
 
 export default function TabLayout() {
@@ -13,49 +12,35 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        animation: "shift",
-        headerShown: false,
         tabBarActiveTintColor: primary,
         lazy: true,
-        tabBarStyle: {
-          backgroundColor: colors.background,
-          borderTopWidth: 0,
-        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => (
-            <AntDesign name="home" size={24} color={color} />
-          ),
+          tabBarIcon: () => require("@/assets/icons/wallet-outline.svg"),
         }}
       />
       <Tabs.Screen
         name="cards"
         options={{
           title: "Cards",
-          tabBarIcon: ({ color }) => (
-            <Entypo name="credit-card" size={24} color={color} />
-          ),
+          tabBarIcon: () => require("@/assets/icons/card-outline.svg"),
         }}
       />
       <Tabs.Screen
         name="analysis"
         options={{
           title: "Analysis",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="analytics-outline" size={24} color={color} />
-          ),
+          tabBarIcon: () => require("@/assets/icons/stats-chart-outline.svg"),
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: "Settings",
-          tabBarIcon: ({ color }) => (
-            <AntDesign name="setting" size={24} color={color} />
-          ),
+          tabBarIcon: () => require("@/assets/icons/settings-outline.svg"),
         }}
       />
     </Tabs>
