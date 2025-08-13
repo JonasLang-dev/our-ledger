@@ -15,7 +15,7 @@ type Props = {
   themeSwitch: string;
   setThemeSwitch: React.Dispatch<React.SetStateAction<string>>;
   theme: string | null | undefined;
-  setTheme: React.Dispatch<React.SetStateAction<string | null | undefined>>;
+  setTheme: React.Dispatch<React.SetStateAction<string | null | undefined>>;  
 };
 
 const Switch = ({ setThemeSwitch, themeSwitch, theme, setTheme }: Props) => {
@@ -33,6 +33,7 @@ const Switch = ({ setThemeSwitch, themeSwitch, theme, setTheme }: Props) => {
 
   useEffect(() => {
     if (themeSwitch === "system") {
+      
       translateX.value = withSpring(SWITCH_WIDTH * 0);
     } else if (themeSwitch === "light") {
       translateX.value = withSpring(SWITCH_WIDTH * 1);
