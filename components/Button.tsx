@@ -1,4 +1,5 @@
-import React from "react";
+import { ThemeContext } from "@/app/_layout";
+import React, { useContext } from "react";
 import { StyleSheet, TouchableWithoutFeedback } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -8,10 +9,10 @@ import { BottomSheetMethods } from "./BottomSheet";
 
 type Props = {
   bottomSheetRef: React.RefObject<BottomSheetMethods | null>;
-  theme: string | null | undefined;
 };
 
-const Button = ({ bottomSheetRef, theme }: Props) => {
+const Button = ({ bottomSheetRef }: Props) => {
+  const { theme } = useContext(ThemeContext);
   const backgroundColorAnimation = useAnimatedStyle(() => {
     return {
       backgroundColor:
@@ -29,7 +30,9 @@ const Button = ({ bottomSheetRef, theme }: Props) => {
         bottomSheetRef.current?.open();
       }}>
       <Animated.View style={[styles.container, backgroundColorAnimation]}>
-        <Animated.Text style={[styles.text, textColorAnimation]}>Change Theme</Animated.Text>
+        <Animated.Text style={[styles.text, textColorAnimation]}>
+          Change Theme
+        </Animated.Text>
       </Animated.View>
     </TouchableWithoutFeedback>
   );

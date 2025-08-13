@@ -1,6 +1,8 @@
+import { ThemeContext } from "@/app/_layout";
 import React, {
   forwardRef,
   useCallback,
+  useContext,
   useImperativeHandle,
   useState,
 } from "react";
@@ -17,137 +19,126 @@ import BackDrop from "./BackDrop";
 import Icon from "./Icon";
 import Switch from "./Switch";
 
-type Props = {
-  themeSwitch: string;
-  setThemeSwitch: React.Dispatch<React.SetStateAction<string>>;
-  theme: string | null | undefined;
-  setTheme: React.Dispatch<React.SetStateAction<string | null | undefined>>;
-};
+type Props = {};
 
 export interface BottomSheetMethods {
   open: () => void;
   close: () => void;
 }
 
-const BottomSheet = forwardRef<BottomSheetMethods, Props>(
-  ({ themeSwitch, setThemeSwitch, theme, setTheme }, ref) => {
-    const insets = useSafeAreaInsets();
-    const { width } = useWindowDimensions();
-    const [bottomSheetHeight, setBottomSheetHeight] = useState(1000);
-    const OPEN = 0;
-    const CLOSE = bottomSheetHeight + insets.bottom;
+const BottomSheet = forwardRef<BottomSheetMethods, Props>(({}, ref) => {
+  const { theme } = useContext(ThemeContext);
+  const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  const [bottomSheetHeight, setBottomSheetHeight] = useState(1000);
+  const OPEN = 0;
+  const CLOSE = bottomSheetHeight + insets.bottom;
 
-    const translateY = useSharedValue(OPEN);
-    const animationStyle = useAnimatedStyle(() => {
-      return {
-        transform: [{ translateY: translateY.value }],
-      };
+  const translateY = useSharedValue(OPEN);
+  const animationStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: translateY.value }],
+    };
+  });
+
+  const open = useCallback(() => {
+    translateY.value = withTiming(OPEN);
+  }, [translateY]);
+
+  const close = useCallback(() => {
+    translateY.value = withTiming(CLOSE);
+  }, [CLOSE, translateY]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      open,
+      close,
+    }),
+    [open, close]
+  );
+
+  const pan = Gesture.Pan()
+    .onUpdate((event) => {
+      if (event.translationY < 0) {
+        translateY.value = withSpring(OPEN, {
+          damping: 100,
+          stiffness: 400,
+        });
+      } else {
+        translateY.value = withSpring(event.translationY, {
+          damping: 100,
+          stiffness: 400,
+        });
+      }
+    })
+    .onEnd(() => {
+      if (translateY.value > 50) {
+        translateY.value = withSpring(CLOSE, {
+          damping: 100,
+          stiffness: 400,
+        });
+      } else {
+        translateY.value = withSpring(OPEN, {
+          damping: 100,
+          stiffness: 400,
+        });
+      }
     });
 
-    const open = useCallback(() => {
-      translateY.value = withTiming(OPEN);
-    }, [translateY]);
+  const backgroundColorAnimation = useAnimatedStyle(() => {
+    return {
+      backgroundColor:
+        theme === "dark" ? withTiming("#22273B") : withTiming("#F0F0F0"),
+    };
+  });
 
-    const close = useCallback(() => {
-      translateY.value = withTiming(CLOSE);
-    }, [CLOSE, translateY]);
+  const textColorAnimation = useAnimatedStyle(() => {
+    return {
+      color: theme === "dark" ? withTiming("white") : withTiming("black"),
+    };
+  });
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        open,
-        close,
-      }),
-      [open, close]
-    );
-
-    const pan = Gesture.Pan()
-      .onUpdate((event) => {
-        if (event.translationY < 0) {
-          translateY.value = withSpring(OPEN, {
-            damping: 100,
-            stiffness: 400,
-          });
-        } else {
-          translateY.value = withSpring(event.translationY, {
-            damping: 100,
-            stiffness: 400,
-          });
-        }
-      })
-      .onEnd(() => {
-        if (translateY.value > 50) {
-          translateY.value = withSpring(CLOSE, {
-            damping: 100,
-            stiffness: 400,
-          });
-        } else {
-          translateY.value = withSpring(OPEN, {
-            damping: 100,
-            stiffness: 400,
-          });
-        }
-      });
-
-    const backgroundColorAnimation = useAnimatedStyle(() => {
-      return {
-        backgroundColor:
-          theme === "dark" ? withTiming("#22273B") : withTiming("#F0F0F0"),
-      };
-    });
-
-    const textColorAnimation = useAnimatedStyle(() => {
-      return {
-        color: theme === "dark" ? withTiming("white") : withTiming("black"),
-      };
-    });
-
-    return (
-      <>
-        <BackDrop
-          translateY={translateY}
-          openHeight={OPEN}
-          closeHeight={CLOSE}
-          close={close}
-        />
-        <GestureDetector gesture={pan}>
-          <Animated.View
-            onLayout={({ nativeEvent }) => {
-              const { height } = nativeEvent.layout;
-              if (height) {
-                setBottomSheetHeight(height);
-                translateY.value = withTiming(height + insets.bottom);
-              }
-            }}
-            style={[
-              styles.container,
-              { width: width * 0.92, bottom: insets.bottom },
-              animationStyle,
-              backgroundColorAnimation,
-            ]}>
-            <View style={styles.line} />
-            <Icon theme={theme} />
-            <Animated.Text style={[styles.textTitle, textColorAnimation]}>
-              Choose a style
-            </Animated.Text>
-            <Animated.Text style={[styles.text, textColorAnimation]}>
-              Pop or subtle. Day or night
-            </Animated.Text>
-            <Animated.Text style={[styles.text, textColorAnimation]}>
-              Customize your interface
-            </Animated.Text>
-            <Switch
-              setThemeSwitch={setThemeSwitch}
-              themeSwitch={themeSwitch}
-              theme={theme}
-              setTheme={setTheme}
-            />
-          </Animated.View>
-        </GestureDetector>
-      </>
-    );
-  }
-);
+  return (
+    <>
+      <BackDrop
+        translateY={translateY}
+        openHeight={OPEN}
+        closeHeight={CLOSE}
+        close={close}
+      />
+      <GestureDetector gesture={pan}>
+        <Animated.View
+          onLayout={({ nativeEvent }) => {
+            const { height } = nativeEvent.layout;
+            if (height) {
+              setBottomSheetHeight(height);
+              translateY.value = withTiming(height + insets.bottom);
+            }
+          }}
+          style={[
+            styles.container,
+            { width: width * 0.92, bottom: insets.bottom },
+            animationStyle,
+            backgroundColorAnimation,
+          ]}>
+          <View style={styles.line} />
+          <Icon />
+          <Animated.Text style={[styles.textTitle, textColorAnimation]}>
+            Choose a style
+          </Animated.Text>
+          <Animated.Text style={[styles.text, textColorAnimation]}>
+            Pop or subtle. Day or night
+          </Animated.Text>
+          <Animated.Text style={[styles.text, textColorAnimation]}>
+            Customize your interface
+          </Animated.Text>
+          <Switch />
+        </Animated.View>
+      </GestureDetector>
+    </>
+  );
+});
 
 BottomSheet.displayName = "BottomSheet";
 

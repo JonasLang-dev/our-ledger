@@ -1,3 +1,4 @@
+import { ThemeContext } from "@/app/_layout";
 import {
   Canvas,
   Circle,
@@ -5,7 +6,7 @@ import {
   LinearGradient,
   Mask,
 } from "@shopify/react-native-skia";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { StyleSheet } from "react-native";
 
 import {
@@ -15,13 +16,12 @@ import {
   withTiming,
 } from "react-native-reanimated";
 
-type Props = {
-  theme: string | null | undefined;
-};
+type Props = {};
 
 const RADIUS = 70;
 
-const Icon = ({ theme }: Props) => {
+const Icon = ({}: Props) => {
+  const { theme } = useContext(ThemeContext);
   const gradientColor1 = useSharedValue("#ff4467");
   const gradientColor2 = useSharedValue("#ff8e0b");
   const cy = useSharedValue(0);

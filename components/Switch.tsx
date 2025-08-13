@@ -1,25 +1,16 @@
-import React, { useEffect } from "react";
-import {
-  Appearance,
-  Pressable,
-  StyleSheet,
-  useWindowDimensions,
-} from "react-native";
+import { ThemeContext } from "@/app/_layout";
+import React, { useCallback, useContext, useEffect } from "react";
+import { Pressable, StyleSheet, useWindowDimensions } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
 
-type Props = {
-  themeSwitch: string;
-  setThemeSwitch: React.Dispatch<React.SetStateAction<string>>;
-  theme: string | null | undefined;
-  setTheme: React.Dispatch<React.SetStateAction<string | null | undefined>>;
-};
+type Props = {};
 
-const Switch = ({ setThemeSwitch, themeSwitch, theme, setTheme }: Props) => {
-  const colorScheme = Appearance.getColorScheme();
+const Switch = ({}: Props) => {
+  const { theme, setTheme } = useContext(ThemeContext);
   const { width } = useWindowDimensions();
   const SWITCH_CONTAINER_WIDTH = width * 0.8;
   const SWITCH_WIDTH = (width * 0.8) / 3;
@@ -31,15 +22,19 @@ const Switch = ({ setThemeSwitch, themeSwitch, theme, setTheme }: Props) => {
     };
   });
 
-  useEffect(() => {
-    if (themeSwitch === "system") {
+  const switchChange = useCallback(() => {
+    if (theme === "system") {
       translateX.value = withSpring(SWITCH_WIDTH * 0);
-    } else if (themeSwitch === "light") {
+    } else if (theme === "light") {
       translateX.value = withSpring(SWITCH_WIDTH * 1);
-    } else if (themeSwitch === "dark") {
+    } else if (theme === "dark") {
       translateX.value = withSpring(SWITCH_WIDTH * 2);
     }
-  }, [SWITCH_WIDTH, themeSwitch, translateX]);
+  }, [SWITCH_WIDTH, theme, translateX]);
+
+  useEffect(() => {
+    switchChange();
+  }, [SWITCH_WIDTH, switchChange, theme, translateX]);
 
   const backgroundColor = useAnimatedStyle(() => {
     return {
@@ -82,11 +77,8 @@ const Switch = ({ setThemeSwitch, themeSwitch, theme, setTheme }: Props) => {
       </Animated.View>
       <Pressable
         style={styles.button}
-        onPress={() => {
-          setThemeSwitch("system");
-          if (colorScheme) {
-            setTheme(colorScheme);
-          }
+        onPress={(e) => {
+          setTheme("system");
         }}>
         <Animated.Text style={[styles.textButton, textColorAnimation]}>
           System
@@ -95,7 +87,6 @@ const Switch = ({ setThemeSwitch, themeSwitch, theme, setTheme }: Props) => {
       <Pressable
         style={styles.button}
         onPress={() => {
-          setThemeSwitch("light");
           setTheme("light");
         }}>
         <Animated.Text style={[styles.textButton, textColorAnimation]}>
@@ -105,7 +96,6 @@ const Switch = ({ setThemeSwitch, themeSwitch, theme, setTheme }: Props) => {
       <Pressable
         style={styles.button}
         onPress={() => {
-          setThemeSwitch("dark");
           setTheme("dark");
         }}>
         <Animated.Text style={[styles.textButton, textColorAnimation]}>

@@ -1,26 +1,21 @@
 import BottomSheet, { BottomSheetMethods } from "@/components/BottomSheet";
 import Button from "@/components/Button";
-import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, useColorScheme } from "react-native";
+import React, { useContext, useRef } from "react";
+import { StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ThemeContext } from "../_layout";
 
 const Settings = () => {
-  const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
+  const { theme } = useContext(ThemeContext);
+  // const colorScheme = Appearance.getColorScheme();
   const bottomSheetRef = useRef<BottomSheetMethods>(null);
-  const [themeSwitch, setThemeSwitch] = useState<string>("system");
-  const [theme, setTheme] = useState<string | null | undefined>(colorScheme);
-
-  useEffect(() => {
-    if (themeSwitch === "system") {
-      setTheme(colorScheme);
-      
-    }
-  }, [colorScheme, themeSwitch]);
+  // const [themeSwitch, setThemeSwitch] = useState<string>("system");
+  // const [theme, setTheme] = useState<string | null | undefined>(colorScheme);
 
   const backgroundColorAnimation = useAnimatedStyle(() => {
     return {
@@ -35,14 +30,8 @@ const Settings = () => {
         styles.container,
         { paddingTop: insets.top },
       ]}>
-      <Button bottomSheetRef={bottomSheetRef} theme={theme} />
-      <BottomSheet
-        ref={bottomSheetRef}
-        setThemeSwitch={setThemeSwitch}
-        themeSwitch={themeSwitch}
-        setTheme={setTheme}
-        theme={theme}
-      />
+      <Button bottomSheetRef={bottomSheetRef} />
+      <BottomSheet ref={bottomSheetRef} />
     </Animated.View>
   );
 };

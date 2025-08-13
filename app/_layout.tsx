@@ -1,34 +1,48 @@
-import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { themes } from "@/constants/theme";
 import { ThemeProvider } from "@shopify/restyle";
+import { createContext, useState } from "react";
 import { useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+export const ThemeContext = createContext<{
+  theme: "light" | "dark" | "system" | null;
+  setTheme: React.Dispatch<
+    React.SetStateAction<"light" | "dark" | "system" | null>
+  >;
+}>({ theme: null, setTheme: () => {} });
+
 export default function RootLayout() {
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  });
   const colorScheme = useColorScheme();
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+  const [theme, setTheme] = useState<"light" | "dark" | "system" | null>(
+    colorScheme ?? "light"
+  );
 
+  if (theme === null) {
+    return;
+  }
+  console.log("Current color scheme:", theme);
   return (
-    <GestureHandlerRootView>
-      <ThemeProvider
-        theme={colorScheme === "dark" ? themes.dark : themes.light}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
-    </GestureHandlerRootView>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <GestureHandlerRootView>
+        <ThemeProvider
+          theme={
+            theme === "system"
+              ? themes[colorScheme!]
+              : theme === "dark"
+              ? themes.dark
+              : themes.light
+          }>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          {/* <StatusBar style="auto" /> */}
+        </ThemeProvider>
+      </GestureHandlerRootView>
+    </ThemeContext.Provider>
   );
 }
