@@ -1,6 +1,4 @@
-import BottomSheet, { BottomSheetMethods } from "@/components/BottomSheet";
-import Button from "@/components/Button";
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -12,10 +10,6 @@ import { ThemeContext } from "../_layout";
 const Settings = () => {
   const insets = useSafeAreaInsets();
   const { theme } = useContext(ThemeContext);
-  // const colorScheme = Appearance.getColorScheme();
-  const bottomSheetRef = useRef<BottomSheetMethods>(null);
-  // const [themeSwitch, setThemeSwitch] = useState<string>("system");
-  // const [theme, setTheme] = useState<string | null | undefined>(colorScheme);
 
   const backgroundColorAnimation = useAnimatedStyle(() => {
     return {
@@ -29,10 +23,7 @@ const Settings = () => {
         backgroundColorAnimation,
         styles.container,
         { paddingTop: insets.top },
-      ]}>
-      <Button bottomSheetRef={bottomSheetRef} />
-      <BottomSheet ref={bottomSheetRef} />
-    </Animated.View>
+      ]}></Animated.View>
   );
 };
 

@@ -1,10 +1,21 @@
-import { darkTheme } from "./dark";
-import { lightTheme } from "./light";
+import {
+	DarkTheme as NavigationDarkTheme,
+	DefaultTheme as NavigationDefaultTheme,
+} from "@react-navigation/native";
+import merge from "deepmerge";
+import {
+	MD3DarkTheme,
+	MD3LightTheme,
+	adaptNavigationTheme,
+} from "react-native-paper";
 
-export const themes = {
-  light: lightTheme,
-  dark: darkTheme,
-  system: lightTheme, // Default to light theme for system
-};
+const { LightTheme, DarkTheme } = adaptNavigationTheme({
+  reactNavigationLight: NavigationDefaultTheme,
+  reactNavigationDark: NavigationDarkTheme,
+});
 
-export type Theme = typeof lightTheme;
+const CombinedDefaultTheme = merge(MD3LightTheme, LightTheme);
+const CombinedDarkTheme = merge(MD3DarkTheme, DarkTheme);
+
+export { CombinedDarkTheme, CombinedDefaultTheme };
+

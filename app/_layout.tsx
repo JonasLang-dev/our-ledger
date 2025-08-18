@@ -1,11 +1,12 @@
 import { Stack } from "expo-router";
 import "react-native-reanimated";
 
-import { themes } from "@/constants/theme";
-import { ThemeProvider } from "@shopify/restyle";
-import { createContext, useState } from "react";
-import { useColorScheme } from "react-native";
+import { PreferencesContext } from "@/constants/PreferencesContext";
+import { CombinedDarkTheme, CombinedDefaultTheme } from "@/constants/theme";
+import { createContext, useCallback, useMemo, useState } from "react";
+import { StatusBar, useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { PaperProvider } from "react-native-paper";
 
 export const ThemeContext = createContext<{
   theme: "light" | "dark" | "system" | null;
@@ -16,33 +17,32 @@ export const ThemeContext = createContext<{
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const [isThemeDark, setIsThemeDark] = useState(false);
 
-  const [theme, setTheme] = useState<"light" | "dark" | "system" | null>(
-    colorScheme ?? "light"
+  let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
+
+  const toggleTheme = useCallback(() => {
+    return setIsThemeDark(!isThemeDark);
+  }, [isThemeDark]);
+
+  const preferences = useMemo(
+    () => ({
+      toggleTheme,
+      isThemeDark,
+    }),
+    [toggleTheme, isThemeDark]
   );
-
-  if (theme === null) {
-    return;
-  }
-  console.log("Current color scheme:", theme);
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <GestureHandlerRootView>
-        <ThemeProvider
-          theme={
-            theme === "system"
-              ? themes[colorScheme!]
-              : theme === "dark"
-              ? themes.dark
-              : themes.light
-          }>
+    <PreferencesContext.Provider value={preferences}>
+      <PaperProvider theme={theme}>
+        <GestureHandlerRootView>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="+not-found" />
           </Stack>
-          {/* <StatusBar style="auto" /> */}
-        </ThemeProvider>
-      </GestureHandlerRootView>
-    </ThemeContext.Provider>
+          <StatusBar />
+        </GestureHandlerRootView>
+      </PaperProvider>
+    </PreferencesContext.Provider>
   );
 }

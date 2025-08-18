@@ -1,20 +1,13 @@
-import { Theme } from "@/constants/theme";
 import {
   createNativeBottomTabNavigator,
   NativeBottomTabNavigationEventMap,
   NativeBottomTabNavigationOptions,
 } from "@bottom-tabs/react-navigation";
 import { ParamListBase, TabNavigationState } from "@react-navigation/native";
-import { useTheme } from "@shopify/restyle";
 import { withLayoutContext } from "expo-router";
 import React from "react";
 
 export default function TabLayout() {
-  const { colors } = useTheme<Theme>();
-
-  const { primary } = colors;
-
-
   const BottomTabNavigator = createNativeBottomTabNavigator().Navigator;
 
   const Tabs = withLayoutContext<
@@ -24,7 +17,7 @@ export default function TabLayout() {
     NativeBottomTabNavigationEventMap
   >(BottomTabNavigator);
   return (
-    <Tabs tabBarActiveTintColor={primary}>
+    <Tabs>
       <Tabs.Screen
         name="index"
         options={{
