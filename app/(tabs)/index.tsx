@@ -1,51 +1,67 @@
+import Switch from "@/components/Switvh";
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
+import { Appbar, FAB, Portal, useTheme } from "react-native-paper";
 import {
-  Card,
-  SegmentedButtons,
-  Text,
-  useTheme
-} from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const theme = useTheme();
-  const [value, setValue] = useState("toDay");
+  const [state, setState] = useState({ open: false });
 
+  const onStateChange = ({ open }) => setState({ open });
+
+  const { open } = state;
+
+  const insets = useSafeAreaInsets();
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={styles.content}>
-        <Text variant="titleLarge">默认账本</Text>
-      </View>
+      <Appbar.Header>
+        <Appbar.Action icon="menu" onPress={() => {}} />
+        <Appbar.Content title="默认账本" />
+      </Appbar.Header>
 
-      <SegmentedButtons
-        value={value}
-        style={{
-          alignSelf: 'center'
-        }}
-        onValueChange={setValue}
-        buttons={[
-          {
-            value: "toDay",
-            label: "今日",
-          },
-          {
-            value: "toMonth",
-            label: "本月",
-          },
-          { value: "toYear", label: "本年" },
-          { value: "all", label: "全部" },
-          { value: "customer", label: "自定义" },
-        ]}
-      />
-      <Card>
-        <Card.Title title="14日" left={() => <></>} />
-        <Card.Content>
-          <Text variant="titleLarge">支出</Text>
-          <Text variant="bodyMedium">22233</Text>
-        </Card.Content>
-      </Card>
+      <Switch />
+
+      <Portal>
+        <FAB.Group
+          variant="primary"
+          open={open}
+        
+          style={{
+            paddingBottom: 90
+          }}
+          visible
+          icon={open ? "calendar-today" : "plus"}
+          actions={[
+            { icon: "plus", onPress: () => console.log("Pressed add") },
+            {
+              icon: "star",
+              label: "Star",
+              onPress: () => console.log("Pressed star"),
+            },
+            {
+              icon: "email",
+              label: "Email",
+              onPress: () => console.log("Pressed email"),
+            },
+            {
+              icon: "bell",
+              label: "Remind",
+              onPress: () => console.log("Pressed notifications"),
+            },
+          ]}
+          onStateChange={onStateChange}
+          onPress={() => {
+            if (open) {
+              // do something if the speed dial is open
+            }
+          }}
+        />
+      </Portal>
     </SafeAreaView>
   );
 }
@@ -53,12 +69,5 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    gap: 20,
-  },
-
-  content: {
-    paddingLeft: 20,
   },
 });
