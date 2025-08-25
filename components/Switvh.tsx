@@ -34,7 +34,7 @@ const Switch = ({}: Props) => {
   });
 
   const switchChange = useCallback(() => {
-    if (!activeTheme) {
+    if (activeTheme === "system") {
       translateX.value = withSpring(SWITCH_WIDTH * 0);
     } else if (activeTheme === "light") {
       translateX.value = withSpring(SWITCH_WIDTH * 1);
@@ -79,7 +79,7 @@ const Switch = ({}: Props) => {
       <Pressable
         style={styles.button}
         onPress={(e) => {
-          // setTheme("system");
+          setTheme("system");
         }}>
         <Animated.Text style={[styles.textButton]}>今日</Animated.Text>
       </Pressable>
