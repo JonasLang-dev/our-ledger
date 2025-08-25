@@ -1,30 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  withTiming,
-} from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ThemeContext } from "../_layout";
+import Animated from "react-native-reanimated";
 
 const Settings = () => {
-  const insets = useSafeAreaInsets();
-  const { theme } = useContext(ThemeContext);
-
-  const backgroundColorAnimation = useAnimatedStyle(() => {
-    return {
-      backgroundColor:
-        theme === "dark" ? withTiming("black") : withTiming("white"),
-    };
-  });
-  return (
-    <Animated.View
-      style={[
-        backgroundColorAnimation,
-        styles.container,
-        { paddingTop: insets.top },
-      ]}></Animated.View>
-  );
+  return <Animated.View style={[]}></Animated.View>;
 };
 
 export default Settings;

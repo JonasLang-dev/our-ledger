@@ -1,6 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Pressable, StyleSheet, useWindowDimensions } from "react-native";
-import { useTheme } from "react-native-paper";
+import activeThemeId from "@/states/theme";
+import { Theme } from "@/themes";
+import { useTheme } from "@shopify/restyle";
+import { useAtom } from "jotai";
+import React, { useCallback, useEffect } from "react";
+import {
+  Pressable,
+  StyleSheet,
+  useColorScheme,
+  useWindowDimensions,
+} from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -10,9 +18,9 @@ import Animated, {
 type Props = {};
 
 const Switch = ({}: Props) => {
-  const [theme, setTheme] = useState("system");
-
-  const { colors } = useTheme();
+  const theme = useTheme<Theme>();
+  const [activeTheme, setTheme] = useAtom(activeThemeId);
+  const colorScheme = useColorScheme();
 
   const { width } = useWindowDimensions();
   const SWITCH_CONTAINER_WIDTH = width * 0.92;
@@ -26,14 +34,14 @@ const Switch = ({}: Props) => {
   });
 
   const switchChange = useCallback(() => {
-    if (theme === "system") {
+    if (!activeTheme) {
       translateX.value = withSpring(SWITCH_WIDTH * 0);
-    } else if (theme === "light") {
+    } else if (activeTheme === "light") {
       translateX.value = withSpring(SWITCH_WIDTH * 1);
-    } else if (theme === "dark") {
+    } else if (activeTheme === "dark") {
       translateX.value = withSpring(SWITCH_WIDTH * 2);
     }
-  }, [SWITCH_WIDTH, theme, translateX]);
+  }, [SWITCH_WIDTH, activeTheme, translateX]);
 
   useEffect(() => {
     switchChange();
@@ -41,7 +49,7 @@ const Switch = ({}: Props) => {
 
   const SlideBackgroundAnimation = useAnimatedStyle(() => {
     return {
-      backgroundColor: withSpring("#f0f0f0"),
+      backgroundColor: withSpring(theme.colors.$primary),
     };
   });
 
@@ -51,7 +59,7 @@ const Switch = ({}: Props) => {
         styles.container,
         {
           width: SWITCH_CONTAINER_WIDTH,
-          backgroundColor: colors.surfaceVariant,
+          backgroundColor: theme.colors.$windowBackground,
         },
       ]}>
       <Animated.View
@@ -71,7 +79,7 @@ const Switch = ({}: Props) => {
       <Pressable
         style={styles.button}
         onPress={(e) => {
-          setTheme("system");
+          // setTheme("system");
         }}>
         <Animated.Text style={[styles.textButton]}>今日</Animated.Text>
       </Pressable>
@@ -93,7 +101,7 @@ const Switch = ({}: Props) => {
       <Pressable
         style={styles.button}
         onPress={() => {
-          setTheme("dark");
+          // setTheme("dark");
         }}>
         <Animated.Text style={[styles.textButton]}>自定义</Animated.Text>
       </Pressable>
@@ -120,7 +128,7 @@ const styles = StyleSheet.create({
   textButton: {
     color: "black",
     fontWeight: "800",
-		lineHeight: 23
+    lineHeight: 23,
   },
   slideContainer: {
     ...StyleSheet.absoluteFillObject,
