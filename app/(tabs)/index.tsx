@@ -1,8 +1,5 @@
 import { SafeAreaView } from "@/atoms";
 import Switch from "@/components/Switvh";
-import { ColorValue, StyleSheet } from "react-native";
-
-type TestColor = ColorValue;
 
 export default function HomeScreen() {
   return (
@@ -11,9 +8,3 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

@@ -1,12 +1,12 @@
-import React from 'react'
-import { Text, View } from 'react-native'
+import { SafeAreaView, Text } from "@/atoms";
+import React from "react";
 
 const Cards = () => {
-	return (
-		<View>
-			<Text>Cards</Text>
-		</View>
-	)
-}
+  return (
+    <SafeAreaView flex={1} bg="$background">
+      <Text variant="default">Cards</Text>
+    </SafeAreaView>
+  );
+};
 
-export default Cards
+export default Cards;

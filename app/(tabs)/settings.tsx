@@ -1,9 +1,11 @@
+import { SafeAreaView } from "@/atoms";
 import React from "react";
 import { StyleSheet } from "react-native";
-import Animated from "react-native-reanimated";
 
 const Settings = () => {
-  return <Animated.View style={[]}></Animated.View>;
+  return <SafeAreaView bg={"$background"} flex={1}>
+    
+  </SafeAreaView>;
 };
 
 export default Settings;

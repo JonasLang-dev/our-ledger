@@ -1,14 +1,10 @@
+import { Text } from "@/atoms";
 import activeThemeId from "@/states/theme";
 import { Theme } from "@/themes";
 import { useTheme } from "@shopify/restyle";
 import { useAtom } from "jotai";
 import React, { useCallback, useEffect } from "react";
-import {
-  Pressable,
-  StyleSheet,
-  useColorScheme,
-  useWindowDimensions,
-} from "react-native";
+import { Pressable, StyleSheet, useWindowDimensions } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -20,7 +16,6 @@ type Props = {};
 const Switch = ({}: Props) => {
   const theme = useTheme<Theme>();
   const [activeTheme, setTheme] = useAtom(activeThemeId);
-  const colorScheme = useColorScheme();
 
   const { width } = useWindowDimensions();
   const SWITCH_CONTAINER_WIDTH = width * 0.92;
@@ -81,14 +76,14 @@ const Switch = ({}: Props) => {
         onPress={(e) => {
           setTheme("system");
         }}>
-        <Animated.Text style={[styles.textButton]}>今日</Animated.Text>
+        <Text variant="default">今日</Text>
       </Pressable>
       <Pressable
         style={styles.button}
         onPress={() => {
           setTheme("light");
         }}>
-        <Animated.Text style={[styles.textButton]}>本月</Animated.Text>
+        <Text variant="default">本月</Text>
       </Pressable>
 
       <Pressable
@@ -96,14 +91,14 @@ const Switch = ({}: Props) => {
         onPress={() => {
           setTheme("dark");
         }}>
-        <Animated.Text style={[styles.textButton]}>本年</Animated.Text>
+        <Text variant="default">本年</Text>
       </Pressable>
       <Pressable
         style={styles.button}
         onPress={() => {
           // setTheme("dark");
         }}>
-        <Animated.Text style={[styles.textButton]}>自定义</Animated.Text>
+        <Text variant="default">自定义</Text>
       </Pressable>
     </Animated.View>
   );
@@ -124,11 +119,6 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: "center",
     justifyContent: "center",
-  },
-  textButton: {
-    color: "black",
-    fontWeight: "800",
-    lineHeight: 23,
   },
   slideContainer: {
     ...StyleSheet.absoluteFillObject,

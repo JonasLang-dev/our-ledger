@@ -1,11 +1,11 @@
+import { SafeAreaView, Text } from '@/atoms'
 import React from 'react'
-import { Text, View } from 'react-native'
 
 const Analysis = () => {
 	return (
-		<View>
-			<Text>Analysis</Text>
-		</View>
+		<SafeAreaView flex={1} bg="$background">
+      <Text variant="default">Cards</Text>
+    </SafeAreaView>
 	)
 }
 
