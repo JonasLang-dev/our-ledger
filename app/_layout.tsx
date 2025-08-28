@@ -22,10 +22,10 @@ export default function RootLayout() {
           : activeTheme
       }>
       <GestureHandlerRootView>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
       </GestureHandlerRootView>
     </ThemeProvider>
   );

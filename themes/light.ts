@@ -61,12 +61,12 @@ const theme = createTheme({
       fontSize: 16,
     },
     textName: {
-      color: "$foreground",
+      color: p.white,
       fontSize: 26,
       fontWeight: "bold",
     },
     textNumber: {
-      color: "$foreground",
+      color: p.white,
       fontSize: 28,
       fontWeight: "bold",
     },
