@@ -60,6 +60,16 @@ const theme = createTheme({
       color: "$foreground",
       fontSize: 16,
     },
+    textName: {
+      color: "$foreground",
+      fontSize: 26,
+      fontWeight: "bold",
+    },
+    textNumber: {
+      color: "$foreground",
+      fontSize: 28,
+      fontWeight: "bold",
+    },
   },
 });
 

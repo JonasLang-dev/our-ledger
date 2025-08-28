@@ -26,7 +26,11 @@ export default function TabLayout() {
         backgroundColor: theme.colors.$windowBackground,
       }}
       tabBarActiveTintColor={theme.colors.$primary}
-      activeIndicatorColor={theme.colors.$background}>
+      activeIndicatorColor={theme.colors.$background}
+      screenOptions={{
+        
+      }}
+      >
       <Tabs.Screen
         name="index"
         options={{
