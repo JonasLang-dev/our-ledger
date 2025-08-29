@@ -6,6 +6,7 @@ import { useAtom } from "jotai";
 import { useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
+import "../global.css";
 
 export default function RootLayout() {
   const [activeTheme] = useAtom(activeThemeAtom);
