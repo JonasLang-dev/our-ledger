@@ -1,5 +1,5 @@
-import { Animated, ScrollView } from "react-native";
 import React, { forwardRef } from "react";
+import { Animated, ScrollView } from "react-native";
 import { HEADER_HEIGHT, IMG_HEADER_HEIGHT } from "../constants";
 import { useAnimateScrollView } from "../hooks/useAnimatedScrollView";
 import { AnimatedHeader } from "./AnimatedHeader";
@@ -7,6 +7,7 @@ import AnimatedNavbar from "./AnimatedNavBar";
 
 import type { AnimatedScrollViewProps } from "../types/index";
 
+// eslint-disable-next-line react/display-name
 export const AnimatedScrollView = forwardRef<
   ScrollView,
   AnimatedScrollViewProps

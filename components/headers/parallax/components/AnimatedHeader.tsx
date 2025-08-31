@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Animated,
   ImageBackground,
@@ -5,7 +6,6 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import React from "react";
 import type { AnimatedHeaderProps } from "../types";
 
 export const AnimatedHeader = ({
@@ -41,8 +41,7 @@ export const AnimatedHeader = ({
           marginTop: -imageHeight * 4,
           paddingTop: imageHeight * 4,
         },
-      ]}
-    >
+      ]}>
       {HeaderComponent ? (
         <>
           {headerImage ? (
@@ -58,8 +57,7 @@ export const AnimatedHeader = ({
                   ],
                 },
                 imageStyle,
-              ]}
-            >
+              ]}>
               {HeaderComponent}
             </AnimatedImageBackground>
           ) : (
@@ -75,8 +73,7 @@ export const AnimatedHeader = ({
                     ],
                     opacity: headerOpacity,
                   },
-                ]}
-              >
+                ]}>
                 {HeaderComponent}
 
                 {/*
@@ -102,15 +99,13 @@ export const AnimatedHeader = ({
 
                     width: "100%",
                   },
-                ]}
-              >
+                ]}>
                 <Animated.View
                   style={[
                     {
                       opacity,
                     },
-                  ]}
-                >
+                  ]}>
                   {OverlayHeaderContent}
                 </Animated.View>
               </Animated.View>

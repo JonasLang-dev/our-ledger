@@ -1,4 +1,10 @@
 import {
+  AnimatedScrollView,
+  AnimatedScrollViewTitle,
+  AnimatedScrollViewTitleWrapper,
+  HeaderNavBar,
+} from "@/components/headers/parallax";
+import {
   ListItemLeadingIcon,
   ListItemSubTitle,
   ListItemTitle,
@@ -16,7 +22,6 @@ import {
 import React, { useState } from "react";
 import {
   FlatList,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -187,8 +192,7 @@ const Settings = () => {
     <TouchableOpacity
       onPress={item.onPress}
       style={[activeItem === item.id && styles.activeListItem]}
-      activeOpacity={0.7}
-    >
+      activeOpacity={0.7}>
       <ListItemWrapper>
         <ListItemLeadingIcon>
           <View className="ml-4">{item.leadingIcon}</View>
@@ -196,8 +200,7 @@ const Settings = () => {
         <ListItemTitleView>
           <ListItemTitle
             destructive={item.type === "danger"}
-            style={{ marginLeft: 0 }}
-          >
+            style={{ marginLeft: 0 }}>
             {item.title}
           </ListItemTitle>
           <ListItemSubTitle>{item.subtitle}</ListItemSubTitle>
@@ -216,7 +219,7 @@ const Settings = () => {
   const renderSection = (
     title: string,
     data: ListItem[],
-    keyPrefix: string,
+    keyPrefix: string
   ) => (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>{title}</Text>
@@ -235,24 +238,30 @@ const Settings = () => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
+      <AnimatedScrollView
+        headerMaxHeight={120}
+        imageStyle={{}}
+        showsVerticalScrollIndicator={false}
+        renderTopNavBarComponent={() => (
+          <HeaderNavBar>
+            <Text style={styles.topNavTitle}>Settings</Text>
+          </HeaderNavBar>
+        )}
+        renderOveralComponent={() => (
+          <AnimatedScrollViewTitleWrapper>
+            <AnimatedScrollViewTitle size={42}>
+              Settings
+            </AnimatedScrollViewTitle>
+          </AnimatedScrollViewTitleWrapper>
+        )}
+        topBarHeight={100}
+        renderHeaderComponent={() => <></>}>
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContentContainer}
           showsVerticalScrollIndicator={false}
           scrollEnabled
-          contentInsetAdjustmentBehavior="automatic"
-        >
-          <View style={styles.header}>
-            <View className="flex-row gap-4 items-center">
-              <Ionicons name="settings-sharp" color={"white"} size={30} />
-              <Text style={styles.title}>Settings</Text>
-            </View>
-            <Text style={styles.subtitle}>
-              Manage your account and app preferences
-            </Text>
-          </View>
-
+          contentInsetAdjustmentBehavior="automatic">
           {renderSection("Account", profileItems, "profile")}
           {renderSection("Preferences", appItems, "app")}
           {renderSection("Recent Activity", activityItems, "activity")}
@@ -265,7 +274,7 @@ const Settings = () => {
             </Text>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </AnimatedScrollView>
     </View>
   );
 };
@@ -294,7 +303,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "700",
     color: "#FFFFFF",
-
     letterSpacing: -0.5,
   },
   subtitle: {
@@ -312,7 +320,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingLeft: 4,
   },
-
   listContainer: {
     backgroundColor: "#161B22",
     borderRadius: 12,
@@ -322,62 +329,6 @@ const styles = StyleSheet.create({
   },
   flatListContent: {
     flexGrow: 1,
-  },
-  listItemContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    minHeight: 64,
-  },
-  activeListItem: {
-    backgroundColor: "#21262D",
-  },
-  listItemContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-  },
-  leadingIconContainer: {
-    width: 40,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
-  },
-  contentContainer: {
-    flex: 1,
-    justifyContent: "center",
-    minHeight: 40,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 2,
-    gap: 8,
-  },
-  itemTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#F9FAFB",
-    flex: 1,
-  },
-  dangerTitle: {
-    color: "#EF4444",
-  },
-  itemSubtitle: {
-    fontSize: 14,
-    color: "#9CA3AF",
-    lineHeight: 18,
-    marginTop: 2,
-  },
-  warningSubtitle: {
-    color: "#D97706",
-  },
-  successSubtitle: {
-    color: "#059669",
-  },
-  dangerSubtitle: {
-    color: "#DC2626",
   },
   trailingIconContainer: {
     marginLeft: 12,
@@ -400,12 +351,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  badgeText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#FFFFFF",
-    textAlign: "center",
-  },
   separator: {
     height: 1,
     backgroundColor: "#21262D",
@@ -418,6 +363,15 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 14,
     color: "#6B7280",
+    textAlign: "center",
+  },
+  activeListItem: {
+    backgroundColor: "#21262D",
+  },
+  topNavTitle: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "600",
     textAlign: "center",
   },
 });
